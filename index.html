@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceramics City Khulna - Operations Dashboard</title>
+    <!-- Favicon / App Icon for Browser & Mobile Home Screen -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><path d='M30 35h40v30H30z' fill='%23ffffff'/><circle cx='50' cy='50' r='8' fill='%232563eb'/></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-4 max-w-6xl">
+        <!-- Header with Office Photo & Title -->
+        <header class="bg-blue-600 text-white p-6 rounded-lg shadow-md mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow">
+                    <img id="logoDisplay" src="https://via.placeholder.com/150?text=Office" alt="Office Photo" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold">Ceramics City Khulna</h1>
+                    <p class="text-blue-100 text-sm">Daily Operations & Branch Management Dashboard</p>
+                </div>
+            </div>
+            <div>
+                <label class="bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-2 rounded cursor-pointer transition inline-block font-semibold shadow">
+                    Change Office Photo <input type="file" id="logoUpload" accept="image/*" class="hidden">
+                </label>
+            </div>
+        </header>
+
+        <!-- Stats Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-blue-500">
+                <p class="text-gray-500 text-sm font-semibold">Total Entries</p>
+                <h3 id="statTotal" class="text-2xl font-bold text-gray-800">0</h3>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-green-500">
+                <p class="text-gray-500 text-sm font-semibold">Completed (OK)</p>
+                <h3 id="statOk" class="text-2xl font-bold text-green-600">0</h3>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-yellow-500">
+                <p class="text-gray-500 text-sm font-semibold">Pending Issues</p>
+                <h3 id="statPending" class="text-2xl font-bold text-yellow-600">0</h3>
+            </div>
+        </div>
+
+        <!-- Team Members Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-lg font-semibold mb-2 text-gray-700">Team Members & Individual Reports</h2>
+            <p class="text-xs text-gray-500 mb-4">Click on any team member's name to open their individual report form and history.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" id="teamContainer">
+                <!-- Dynamic Team List -->
+            </div>
+        </div>
+
+        <!-- Entry Form Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-lg font-semibold mb-4 text-gray-700">General Daily Operations Entry Form</h2>
+            <form id="entryForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Date</label>
+                    <input type="date" id="entryDate" required class="w-full border rounded p-2 focus:ring focus:ring-blue-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Assigned Team Member</label>
+                    <select id="teamMemberSelect" required class="w-full border rounded p-2 focus:ring focus:ring-blue-300">
+                        <!-- Filled by JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Department / Group / Branch</label>
+                    <select id="department" required class="w-full border rounded p-2 focus:ring focus:ring-blue-300">
+                        <option value="Transport Khulna Zone">Transport Khulna Zone</option>
+                        <option value="Team Warehouse">Team Warehouse</option>
+                        <option value="Ceramics City Khan Jahan-Ali Road Branch">Ceramics City Khan Jahan-Ali Road Branch</option>
+                        <option value="Emergency Discuss">Emergency Discuss</option>
+                        <option value="Received Product in Warehouse">Received Product in Warehouse</option>
+                        <option value="All Challan Received-All so">All Challan Received-All so</option>
+                        <option value="Ceramics City Corporate Branch">Ceramics City Corporate Branch</option>
+                        <option value="Ceramics City Sonadanga Branch">Ceramics City Sonadanga Branch</option>
+                        <option value="Daily Case Book">Daily Case Book</option>
+                        <option value="Business Khulna">Business Khulna</option>
+                        <option value="Order Group Ceramics City Khulna">Order Group Ceramics City Khulna</option>
+                        <option value="Khulna Fresh Stock & News Update">Khulna Fresh Stock & News Update</option>
+                        <option value="Customer Deposit Bank Account Ceramics City">Customer Deposit Bank Account Ceramics City</option>
+                        <option value="Deposit to Direct Company- Retail & Customer Account Transfer">Deposit to Direct Company- Retail & Customer Account Transfer</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Cash & Bank Status</label>
+                    <input type="text" id="cashStatus" placeholder="e.g. Updated / Checked" class="w-full border rounded p-2 focus:ring focus:ring-blue-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Stock & Delivery Status</label>
+                    <input type="text" id="stockStatus" placeholder="e.g. All Okay / Challan Received" class="w-full border rounded p-2 focus:ring focus:ring-blue-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Special Notes / Issues</label>
+                    <input type="text" id="notes" placeholder="e.g. Design pending" class="w-full border rounded p-2 focus:ring focus:ring-blue-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Final Status</label>
+                    <select id="finalStatus" class="w-full border rounded p-2 focus:ring focus:ring-blue-300">
+                        <option value="OK">OK</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2 lg:col-span-3 flex justify-end gap-2 mt-2">
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition font-semibold">Save General Entry</button>
+                    <button type="button" onclick="exportToCSV()" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition font-semibold">Download CSV</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="bg-white p-4 rounded-lg shadow-md mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="w-full md:w-1/2">
+                <input type="text" id="searchInput" placeholder="Search by Group, Member, Notes or Date..." onkeyup="renderTable()" class="w-full border rounded p-2 focus:ring focus:ring-blue-300 text-sm">
+            </div>
+            <div class="w-full md:w-auto flex items-center gap-2">
+                <label class="text-sm font-medium text-gray-600">Filter Status:</label>
+                <select id="filterStatus" onchange="renderTable()" class="border rounded p-2 text-sm focus:ring focus:ring-blue-300">
+                    <option value="ALL">All</option>
+                    <option value="OK">OK Only</option>
+                    <option value="Pending">Pending Only</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-lg font-semibold mb-4 text-gray-700">Recent General Entries (Group & Date Wise)</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-700 text-sm">
+                            <th class="p-3 border">Date</th>
+                            <th class="p-3 border">Team Member</th>
+                            <th class="p-3 border">Department / Group / Branch</th>
+                            <th class="p-3 border">Cash & Bank</th>
+                            <th class="p-3 border">Stock & Delivery</th>
+                            <th class="p-3 border">Notes</th>
+                            <th class="p-3 border">Status</th>
+                            <th class="p-3 border text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="text-sm text-gray-600">
+                        <!-- Dynamic Entries -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Individual Member Profile & Report Modal -->
+    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg max-w-3xl w-full p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 border-b pb-3">
+                <div>
+                    <h3 id="modalMemberName" class="text-xl font-bold text-gray-800"></h3>
+                    <p id="modalMemberRole" class="text-sm text-blue-600 font-semibold"></p>
+                </div>
+                <button onclick="closeProfileModal()" class="text-gray-500 hover:text-gray-700 font-bold text-2xl">&times;</button>
+            </div>
+
+            <!-- New Individual Daily Report Form Inside Modal -->
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
+                <h4 class="text-md font-semibold text-blue-800 mb-3">Add Daily Performance Report</h4>
+                <form id="memberReportForm" onsubmit="saveMemberReport(event)" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Date</label>
+                        <input type="date" id="repDate" required class="w-full border rounded p-1.5 text-sm bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Punctuality (সময়মতো উপস্থিতি)</label>
+                        <select id="repTime" class="w-full border rounded p-1.5 text-sm bg-white">
+                            <option value="On Time">On Time (সময়মতো)</option>
+                            <option value="Late">Late (বিলম্ব)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Office Dress (অফিস ড্রেস)</label>
+                        <select id="repDress" class="w-full border rounded p-1.5 text-sm bg-white">
+                            <option value="Proper">Proper (সঠিক)</option>
+                            <option value="Improper">Improper (বেঠিক)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Behavior (আচরণ)</label>
+                        <select id="repBehavior" class="w-full border rounded p-1.5 text-sm bg-white">
+                            <option value="Good">Good (ভালো)</option>
+                            <option value="Average">Average (চলনসই)</option>
+                            <option value="Needs Improvement">Needs Improvement (সংশোধন প্রয়োজন)</option>
+                        </select>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Work Performance / Notes (কাজের রিপোর্ট)</label>
+                        <input type="text" id="repWork" placeholder="e.g. Completed daily accounts reconciliation" required class="w-full border rounded p-1.5 text-sm bg-white">
+                    </div>
+                    <div class="sm:col-span-3 flex justify-end">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-1.5 rounded text-sm hover:bg-blue-700 font-semibold transition">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+
+            <h4 class="text-md font-semibold text-gray-700 mb-3">Previous Performance & Daily Logs</h4>
+            <div id="modalReportContent" class="space-y-3">
+                <!-- Dynamic Member Reports List -->
+            </div>
+            
+            <div class="mt-6 text-right">
+                <button onclick="closeProfileModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-sm font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const teamMembers = [
+            { name: "Fahad Molla", role: "Business Management Officer" },
+            { name: "Md. Tarikul Islam Tuhin", role: "Accounts & Assistant Manager" },
+            { name: "Md. Nakib Nasrullah", role: "Business Development & Digital Marketing Executive" },
+            { name: "Md. Saydur Rahman", role: "Head of Sales" },
+            { name: "Riazul Islam Niaz", role: "Sales Manager" },
+            { name: "Seaum Chowdhury", role: "Sales Assistant" },
+            { name: "Boni Amin Kazi", role: "Sales Associate" },
+            { name: "Md. Jasim Uddin", role: "Branch Manager" },
+            { name: "Habibur Rahman", role: "Sales Associate" },
+            { name: "Asif Adnan", role: "Sales Associate" }
+        ];
+
+        document.getElementById('entryDate').valueAsDate = new Date();
+
+        let entries = JSON.parse(localStorage.getItem('ceramicsEntries')) || [];
+        let memberReports = JSON.parse(localStorage.getItem('ceramicsMemberReports')) || {};
+        let currentActiveMember = '';
+
+        let savedLogo = localStorage.getItem('ceramicsOfficeLogo');
+        if(savedLogo) {
+            document.getElementById('logoDisplay').src = savedLogo;
+        }
+
+        function initTeamUI() {
+            const select = document.getElementById('teamMemberSelect');
+            const container = document.getElementById('teamContainer');
+            select.innerHTML = '';
+            container.innerHTML = '';
+
+            teamMembers.forEach(member => {
+                const opt = document.createElement('option');
+                opt.value = member.name;
+                opt.textContent = `${member.name} (${member.role})`;
+                select.appendChild(opt);
+
+                const card = document.createElement('div');
+                card.className = "bg-blue-50 border border-blue-200 hover:bg-blue-100 p-3 rounded-lg shadow-sm cursor-pointer transition text-center flex flex-col justify-between";
+                card.onclick = () => openProfileModal(member.name, member.role);
+                card.innerHTML = `
+                    <div>
+                        <div class="w-10 h-10 bg-blue-600 text-white font-bold rounded-full flex items-center justify-center mx-auto mb-2 text-sm">
+                            ${member.name.charAt(0)}
+                        </div>
+                        <h4 class="font-bold text-gray-800 text-sm mb-1">${member.name}</h4>
+                        <p class="text-xs text-gray-500">${member.role}</p>
+                    </div>
+                    <span class="text-blue-600 text-xs font-semibold mt-2 inline-block">Daily Report Form &rarr;</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.getElementById('logoUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Image = event.target.result;
+                    document.getElementById('logoDisplay').src = base64Image;
+                    localStorage.setItem('ceramicsOfficeLogo', base64Image);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateStats() {
+            document.getElementById('statTotal').innerText = entries.length;
+            const okCount = entries.filter(e => e.finalStatus === 'OK').length;
+            const pendingCount = entries.filter(e => e.finalStatus === 'Pending').length;
+            document.getElementById('statOk').innerText = okCount;
+            document.getElementById('statPending').innerText = pendingCount;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const filterVal = document.getElementById('filterStatus').value;
+
+            tbody.innerHTML = '';
+
+            let filteredEntries = entries.filter(entry => {
+                const memberName = (entry.memberName || '').toLowerCase();
+                const matchesSearch = memberName.includes(searchQuery) ||
+                                      entry.department.toLowerCase().includes(searchQuery) ||
+                                      entry.cashStatus.toLowerCase().includes(searchQuery) ||
+                                      entry.stockStatus.toLowerCase().includes(searchQuery) ||
+                                      entry.notes.toLowerCase().includes(searchQuery) ||
+                                      entry.date.includes(searchQuery);
+                const matchesFilter = filterVal === 'ALL' || entry.finalStatus === filterVal;
+                return matchesSearch && matchesFilter;
+            });
+
+            if (filteredEntries.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-gray-400">No matching entries found.</td></tr>`;
+                updateStats();
+                return;
+            }
+
+            filteredEntries.forEach((entry) => {
+                const originalIndex = entries.indexOf(entry);
+                const tr = document.createElement('tr');
+                tr.className = originalIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                tr.innerHTML = `
+                    <td class="p-3 border font-semibold text-gray-700">${entry.date}</td>
+                    <td class="p-3 border font-semibold text-blue-600 cursor-pointer hover:underline" onclick="openProfileModalForEntry('${entry.memberName}')">${entry.memberName || 'N/A'}</td>
+                    <td class="p-3 border font-medium text-gray-800">${entry.department}</td>
+                    <td class="p-3 border">${entry.cashStatus}</td>
+                    <td class="p-3 border">${entry.stockStatus}</td>
+                    <td class="p-3 border">${entry.notes}</td>
+                    <td class="p-3 border">
+                        <span class="px-2 py-1 rounded text-xs font-semibold ${entry.finalStatus === 'OK' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
+                            ${entry.finalStatus}
+                        </span>
+                    </td>
+                    <td class="p-3 border text-center">
+                        <button onclick="deleteEntry(${originalIndex})" class="text-red-500 hover:text-red-700 font-bold">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            updateStats();
+        }
+
+        document.getElementById('entryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newEntry = {
+                date: document.getElementById('entryDate').value,
+                memberName: document.getElementById('teamMemberSelect').value,
+                department: document.getElementById('department').value,
+                cashStatus: document.getElementById('cashStatus').value,
+                stockStatus: document.getElementById('stockStatus').value,
+                notes: document.getElementById('notes').value,
+                finalStatus: document.getElementById('finalStatus').value
+            };
+            entries.unshift(newEntry);
+            localStorage.setItem('ceramicsEntries', JSON.stringify(entries));
+            renderTable();
+            this.reset();
+            document.getElementById('entryDate').valueAsDate = new Date();
+        });
+
+        function deleteEntry(index) {
+            if(confirm('Are you sure you want to delete this entry?')) {
+                entries.splice(index, 1);
+                localStorage.setItem('ceramicsEntries', JSON.stringify(entries));
+                renderTable();
+            }
+        }
+
+        function openProfileModal(name, role) {
+            currentActiveMember = name;
+            document.getElementById('modalMemberName').textContent = name;
+            document.getElementById('modalMemberRole').textContent = role;
+            document.getElementById('repDate').valueAsDate = new Date();
+            
+            renderMemberReportsList();
+            document.getElementById('profileModal').classList.remove('hidden');
+        }
+
+        function openProfileModalForEntry(name) {
+            const found = teamMembers.find(m => m.name === name);
+            const role = found ? found.role : 'Team Member';
+            if(name) {
+                openProfileModal(name, role);
+            }
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+            currentActiveMember = '';
+        }
+
+        function saveMemberReport(e) {
+            e.preventDefault();
+            if (!currentActiveMember) return;
+
+            const rep = {
+                date: document.getElementById('repDate').value,
+                time: document.getElementById('repTime').value,
+                dress: document.getElementById('repDress').value,
+                behavior: document.getElementById('repBehavior').value,
+                work: document.getElementById('repWork').value
+            };
+
+            if (!memberReports[currentActiveMember]) {
+                memberReports[currentActiveMember] = [];
+            }
+            memberReports[currentActiveMember].unshift(rep);
+            localStorage.setItem('ceramicsMemberReports', JSON.stringify(memberReports));
+
+            document.getElementById('memberReportForm').reset();
+            document.getElementById('repDate').valueAsDate = new Date();
+            renderMemberReportsList();
+        }
+
+        function renderMemberReportsList() {
+            const contentDiv = document.getElementById('modalReportContent');
+            contentDiv.innerHTML = '';
+
+            const list = (memberReports[currentActiveMember] || []);
+
+            if (list.length === 0) {
+                contentDiv.innerHTML = `<p class="text-gray-500 text-sm text-center py-4">No daily performance reports recorded yet.</p>`;
+                return;
+            }
+
+            list.forEach((r, idx) => {
+                const item = document.createElement('div');
+                item.className = "bg-gray-50 p-3 rounded border text-sm flex flex-col gap-1";
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">📅 Date: ${r.date}</span>
+                        <div class="flex gap-2">
+                            <span class="px-2 py-0.5 rounded text-xs font-semibold ${r.time === 'On Time' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">${r.time}</span>
+                            <span class="px-2 py-0.5 rounded text-xs font-semibold ${r.dress === 'Proper' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">Dress: ${r.dress}</span>
+                            <span class="px-2 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-700">Behavior: ${r.behavior}</span>
+                        </div>
+                    </div>
+                    <p class="mt-1"><strong>Work / Remarks:</strong> ${r.work}</p>
+                    <div class="text-right">
+                        <button onclick="deleteMemberReport('${currentActiveMember}', ${idx})" class="text-xs text-red-500 hover:text-red-700 font-semibold">Delete Report</button>
+                    </div>
+                `;
+                contentDiv.appendChild(item);
+            });
+        }
+
+        function deleteMemberReport(memberName, index) {
+            if(confirm('Are you sure you want to delete this report?')) {
+                memberReports[memberName].splice(index, 1);
+                localStorage.setItem('ceramicsMemberReports', JSON.stringify(memberReports));
+                renderMemberReportsList();
+            }
+        }
+
+        function exportToCSV() {
+            if (entries.length === 0) {
+                alert('No data available to export!');
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,Date,Team Member,Department/Group,Cash Status,Stock Status,Notes,Final Status\n";
+            entries.forEach(e => {
+                csvContent += `"${e.date}","${e.memberName || ''}","${e.department}","${e.cashStatus}","${e.stockStatus}","${e.notes}","${e.finalStatus}"\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "ceramics_city_daily_reports.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        initTeamUI();
+        renderTable();
+    </script>
+</body>
+</html>
